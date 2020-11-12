@@ -12,7 +12,11 @@ const app = express();
 const connection =
   process.env.CONNECTION_STRING || 'mongodb://localhost:27017/DB Name';
 mongoose
-  .connect(connection, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(connection, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    retryWrites: false,
+  })
   .then(() => {
     console.log('Successfully connected to mongoDB');
   })
