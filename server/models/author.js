@@ -2,10 +2,9 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-let bookSchema = new Schema({
+let authorSchema = new Schema({
   name: String,
-  genre: String,
-  authorId: String,
+  age: Number,
 });
 
-module.exports = mongoose.model('Book', bookSchema);
+module.exports = mongoose.model('Author', authorSchema);
