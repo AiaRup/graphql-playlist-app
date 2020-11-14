@@ -10,7 +10,7 @@ const schema = require('./schema/schema');
 const app = express();
 
 // allow cross-origin requests
-app.use(cors);
+app.use(cors());
 
 // connect to DB and check the connection
 const connection =
