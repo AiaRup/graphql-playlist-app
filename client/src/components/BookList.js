@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
 
 import { getBooksQuery } from '../queries/queries';
 
+// components
+import BookDetails from './BookDetails';
+
 function BookList({ data }) {
+  const [selected, setSelected] = useState(null);
   const { loading, books } = data;
 
   function displayBooks() {
@@ -14,7 +18,11 @@ function BookList({ data }) {
         return <div>No books to show..</div>;
       }
       return data.books.map((book) => {
-        return <li key={book.id}>{book.name}</li>;
+        return (
+          <li key={book.id} onClick={(e) => setSelected(book.id)}>
+            {book.name}
+          </li>
+        );
       });
     }
   }
@@ -22,6 +30,7 @@ function BookList({ data }) {
   return (
     <div>
       <ul id='book-list'>{displayBooks()}</ul>
+      <BookDetails bookId={selected} />
     </div>
   );
 }
