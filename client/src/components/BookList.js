@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
+import * as compose from 'lodash.flowright';
 
-import { getBooksQuery } from '../queries/queries';
+import { getBooksQuery, deleteBookMutation } from '../queries/queries';
 
 // components
 import BookDetails from './BookDetails';
 
-function BookList({ data }) {
+function BookList({ getBooksQuery, deleteBookMutation }) {
   const [selected, setSelected] = useState(null);
-  const { loading, books } = data;
+  const { loading, books } = getBooksQuery;
 
   function displayBooks() {
     if (loading) {
@@ -17,10 +18,24 @@ function BookList({ data }) {
       if (!books || !books.length) {
         return <div>No books to show..</div>;
       }
-      return data.books.map((book) => {
+      return books.map((book) => {
         return (
-          <li key={book.id} onClick={(e) => setSelected(book.id)}>
-            {book.name}
+          <li key={book.id}>
+            <span onClick={(e) => setSelected(book.id)}>{book.name}</span>
+            <span
+              className='delete-book'
+              onClick={() => {
+                deleteBookMutation({
+                  variables: {
+                    id: book.id,
+                  },
+                  refetchQueries: [{ query: getBooksQuery }],
+                });
+                setSelected(null);
+              }}
+            >
+              x
+            </span>
           </li>
         );
       });
@@ -35,4 +50,7 @@ function BookList({ data }) {
   );
 }
 
-export default graphql(getBooksQuery)(BookList);
+export default compose(
+  graphql(getBooksQuery, { name: 'getBooksQuery' }),
+  graphql(deleteBookMutation, { name: 'deleteBookMutation' })
+)(BookList);
