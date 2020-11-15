@@ -27,7 +27,13 @@ function AddBook({ getAuthorsQuery, addBookMutation }) {
   function submitForm(e) {
     e.preventDefault();
     console.log({ genre, name, authorId });
-    addBookMutation();
+    addBookMutation({
+      variables: {
+        name,
+        genre,
+        authorId,
+      },
+    });
   }
 
   return (
