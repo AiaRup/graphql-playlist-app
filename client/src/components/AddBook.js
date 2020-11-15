@@ -41,6 +41,10 @@ function AddBook({ getAuthorsQuery, addBookMutation }) {
         },
         refetchQueries: [{ query: getBooksQuery }],
       });
+      setName('');
+      setGenre('');
+      setAuthor('');
+      e.target.reset();
     } else {
       setError('All fields are required!');
     }
