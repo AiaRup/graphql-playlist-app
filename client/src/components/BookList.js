@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { graphql } from 'react-apollo';
 import * as compose from 'lodash.flowright';
 
-import { getBooksQuery, deleteBookMutation } from '../queries/queries';
+import {
+  getBooksQuery as getAllBooks,
+  deleteBookMutation,
+} from '../queries/queries';
 
 // components
 import BookDetails from './BookDetails';
@@ -29,7 +32,7 @@ function BookList({ getBooksQuery, deleteBookMutation }) {
                   variables: {
                     id: book.id,
                   },
-                  refetchQueries: [{ query: getBooksQuery }],
+                  refetchQueries: [{ query: getAllBooks }],
                 });
                 setSelected(null);
               }}
@@ -51,6 +54,6 @@ function BookList({ getBooksQuery, deleteBookMutation }) {
 }
 
 export default compose(
-  graphql(getBooksQuery, { name: 'getBooksQuery' }),
+  graphql(getAllBooks, { name: 'getBooksQuery' }),
   graphql(deleteBookMutation, { name: 'deleteBookMutation' })
 )(BookList);
