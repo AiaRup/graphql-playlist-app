@@ -13,6 +13,7 @@ function AddBook({ getAuthorsQuery, addBookMutation }) {
   const [genre, setGenre] = useState('');
   const [name, setName] = useState('');
   const [authorId, setAuthor] = useState('');
+  const [error, setError] = useState('');
 
   function displayAuthors() {
     if (loading) {
@@ -29,19 +30,25 @@ function AddBook({ getAuthorsQuery, addBookMutation }) {
   }
 
   function submitForm(e) {
+    setError('');
     e.preventDefault();
-    addBookMutation({
-      variables: {
-        name,
-        genre,
-        authorId,
-      },
-      refetchQueries: [{ query: getBooksQuery }],
-    });
+    if (genre && name && authorId) {
+      addBookMutation({
+        variables: {
+          name,
+          genre,
+          authorId,
+        },
+        refetchQueries: [{ query: getBooksQuery }],
+      });
+    } else {
+      setError('All fields are required!');
+    }
   }
 
   return (
     <form id='add-book' onSubmit={submitForm}>
+      <div className='error'>{error}</div>
       <div className='field'>
         <label>Book name:</label>
         <input type='text' onChange={(e) => setName(e.target.value)} />

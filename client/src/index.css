@@ -83,3 +83,7 @@ form button {
   box-sizing: border-box;
   color: #fff;
 }
+
+.error {
+  color: red;
+}
